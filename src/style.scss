@@ -1,0 +1,109 @@
+$color_main: #5275B0;
+$color_white: #FFFFFF;
+$color_active: #1C3B72;
+
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+.footer {
+  &__button {
+    margin-top: 15px;
+  }
+}
+
+.btn {
+  color: $color_white;
+  padding: 5px 10px;
+  background-color: $color_main;
+  border-radius: 4px;
+  box-shadow: 1px -1px rgba(0, 0, 0, 0.5);
+  margin-right: 10px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(-1px) translateX(1px);
+  }
+
+  &_red {
+    background-color: #F04F1D;
+  }
+
+  &_green {
+    background-color: #009900;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $color_main;
+  border-radius: 4px;
+
+  &__header {
+    display: flex;
+    padding: 10px 15px;
+    border-bottom: 1px solid $color_main;
+  }
+
+  &__title {
+    margin-right: auto;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: $color_main;
+    align-self: center;
+  }
+
+  &__body {
+    padding: 0 20px;
+    font-size: 0.9rem;
+  }
+}
+
+.todo-list {
+  line-height: 20px;
+
+  &__button {
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  &__item {
+    padding: 5px 0;
+
+    &::before {
+      content: '';
+      display: inline-flex;
+      width: 10px;
+      height: 10px;
+      margin-right: 10px;
+      border-radius: 50%;
+      border: 2px solid #330066;
+    }
+
+    &_done::before {
+      background-color: #330066;
+    }
+
+    &_etc {
+      text-align: center;
+      font-size: 1.3em;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &_not-wrap {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: inherit;
+    }
+  }
+}
