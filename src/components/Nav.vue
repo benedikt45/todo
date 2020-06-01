@@ -2,8 +2,18 @@
   <div class="header">
     <div class="header__logo">Todo manager</div>
     <div class="header__buttons">
-      <router-link to="/create" class="header__button">Create</router-link>
-      <router-link to="/" class="header__button">Main</router-link>
+      <router-link  to="/create"
+                    class="header__button"
+                    active-class="header__button_active" exact
+      >
+        Create
+      </router-link>
+      <router-link  to="/"
+                    class="header__button"
+                    active-class="header__button_active" exact
+      >
+        Main
+      </router-link>
     </div>
   </div>
 </template>
@@ -47,6 +57,11 @@ export default {
         &:hover {
             background-color: $color_active;
         }
+
+        &_active {
+          background-color: $color_active;
+        }
     }
+
 }
 </style>

@@ -1,14 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import List from '../views/List.vue'
-import Item from '../views/Item.vue'
-import store from '@/store'
+import Task from '../views/Task.vue'
 
 Vue.use(VueRouter)
-
-function returnTaskById(route) {
-
-}
 
 const routes = [{
     path: '/',
@@ -18,15 +13,13 @@ const routes = [{
   {
     path: '/create',
     name: 'NewTask',
-    component: Item
+    component: Task
   },
   {
     path: '/:id',
     name: 'EditTask',
-    component: Item,
-    props: {
-      task: store.getters.elemById(route.params.id)
-    }
+    component: Task,
+    props: true
   }
 ]
 

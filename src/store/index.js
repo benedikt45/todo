@@ -17,7 +17,8 @@ export default new Vuex.Store({
           isDone: true
         }
       ]
-    }, {
+    },
+    {
       title: 'New task',
       id: 12333322,
       todos: [{
@@ -37,9 +38,9 @@ export default new Vuex.Store({
   actions: {},
   modules: {},
   getters: {
-    elemById(id) {
-      const el = store.state.tasks.find((el) => {
-        if (el.id == id) {
+    taskById: state => idx => {
+      const el = state.tasks.find((el) => {
+        if (el.id == idx) {
           return el;
         }
       })

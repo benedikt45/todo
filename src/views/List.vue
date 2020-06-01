@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="cards">
-  <TaskItem v-for='(task, index) in $store.state.tasks'
+  <TaskCard v-for='(task, index) in $store.state.tasks'
         v-bind:task='task'
         :key='task.id'
         @deleteTask='deleteTask(index)'
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import TaskItem from '@/components/TaskItem.vue'
+import TaskCard from '@/components/TaskCard.vue'
 export default {
   name: 'List',
   components: {
-    TaskItem
+    TaskCard
   },
   methods: {
     deleteTask(idx) {
