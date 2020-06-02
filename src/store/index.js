@@ -6,45 +6,71 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     tasks: [{
-      title: 'New task',
-      id: 123333,
-      todos: [{
-          text: '123123',
-          isDone: false
-        },
-        {
-          text: '123333333123',
-          isDone: true
-        }
-      ]
-    },
-    {
-      title: 'New task',
-      id: 12333322,
-      todos: [{
-        text: '123123',
-        isDone: false
-      }]
-    }]
+        title: 'New task 1',
+        id: 1,
+        todos: [{
+            text: '11',
+            isDone: false
+          },
+          {
+            text: '12',
+            isDone: true
+          }
+        ]
+      },
+      // {
+      //   title: 'New task 2',
+      //   id: 2,
+      //   todos: [{
+      //     text: '21',
+      //     isDone: false
+      //   }]
+      // }
+    ]
   },
   mutations: {
-    changeStatus(state) {
-
+    deleteTask(state, payload) {
+      state.tasks.splice(payload.idx, 1)
     },
-    deleteTask(state, idx) {
-      state.tasks.splice(idx, 1)
+    updateTask(state, payload) {
+      Vue.set(state.tasks, payload.idx, payload.task)
+    },
+    addTask(state, payload) {
+      state.tasks.push(payload.task)
     }
   },
-  actions: {},
+  actions: {
+    deleteTask(context, payload) {
+      context.commit('deleteTask', payload)
+    },
+    updateTask(context, payload) {
+      context.commit('updateTask', {task: payload.task, idx: context.getters.indexById(payload.id)})
+    },
+    addTask(context, payload) {
+      context.commit('addTask', payload)
+    }
+  },
   modules: {},
   getters: {
-    taskById: state => idx => {
-      const el = state.tasks.find((el) => {
-        if (el.id == idx) {
-          return el;
-        }
-      })
-      return el;
+    taskById(state) {
+      return function(id) {
+        return Object.assign({},
+          state.tasks.find((el) => {
+            if (el.id == id) {
+              return true;
+            }
+          })
+        )
+      }
+    },
+    indexById(state) {
+      return function(id) {
+        return state.tasks.findIndex((el, index) => {
+          if (el.id == id) {
+            return true;
+          }
+        })
+      }
     }
   }
 })

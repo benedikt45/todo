@@ -15,9 +15,17 @@ export default {
   components: {
     TaskCard
   },
+  // data() {
+  //   return {
+  //     tasks: this..slice()
+  //   }
+  // },
+  mounted() {
+    console.log(this.$store.state.tasks);
+  },
   methods: {
     deleteTask(idx) {
-      this.$store.commit('deleteTask', idx)
+      this.$store.dispatch('deleteTask', {idx})
     }
   }
 }

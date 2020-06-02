@@ -3,36 +3,36 @@
       <div class="form__header">
         <label class="form__label">Title</label>
         <input type="text" name="title" value="" class="form__input" v-model='task.title'>
-        <a href="#" class="form__button btn" @click='todoChange'>Add todo</a>
+        <a href="#" class="form__button btn" @click='newTodoEdit = true'>Add todo</a>
       </div>
       <ul class="form__todo todo-list">
-        <li v-for='todo in task.todos'
+        <li v-for='(todo, idx) in task.todos'
             :class='{"todo-list__item_done": todo.isDone}'
-            class="todo-list__item"
-       >
-        {{todo.text}}<i class="fa fa-trash-o todo-list__button" aria-hidden="true"></i>
+            @click='changeStatus(idx)'
+            class="todo-list__item todo-list__item_pointer"
+        >
+        {{todo.text}}<i class="fa fa-trash-o todo-list__button" aria-hidden="true" @click.self.stop='deleteTodo(idx)'></i>
       </li>
       </ul>
       <div class="form__footer footer">
-        <a href="#" class="footer__button btn btn_green">Сохранить</a>
+        <a href="#" class="footer__button btn btn_green" @click.prevent='onSaveTask'>Сохранить</a>
         <a href="#" class="footer__button btn">Отменить изменения</a>
         <a href="#" class="footer__button btn">Выйти без сохранения</a>
         <a href="#" class="footer__button btn">Вернуть внесенные изменения</a>
-        <a href="#" class="footer__button btn btn_red">Удалить</a>
+        <a href="#" class="footer__button btn btn_red" :class='{"btn_not-active": newTask}'>Удалить</a>
       </div>
-      <div class="alert-div" v-show='todoAdd'>
-        <form class="alert-div__fields" action="index.html">
-          <label>Input todo text</label>
-          <input type="text" v-model='newTodo' class="alert-div__input">
-          <button type="submit" @click.prevent='addNewTodo'>add</button>
-        </form>
-      </div>
+      <Modal v-show='newTodoEdit' @onSave='save' @onCancle='newTodoEdit = false'/>
     </form>
 </template>
 
 <script>
+import Modal from '@/components/Modal.vue'
+
 export default {
   name: 'Task',
+  components: {
+    Modal
+  },
   props: {
     id: {
       type: String,
@@ -41,32 +41,47 @@ export default {
   },
   data() {
     return {
-      dataTask: this.task,
-      newTodo: '',
-      todoAdd: false
+      task: {
+        id: new Date(),
+        title: '',
+        todos: []
+      },
+      newTask: false,
+      newTodoEdit: false
     }
+  },
+  mounted() {
+    if (this.id != '') {
+      this.task = this.$store.getters.taskById(this.id);
+    } else {
+      this.newTask = true
+    }
+    console.log(this.task);
   },
   methods: {
-    todoChange() {
-      this.todoAdd = !this.todoAdd;
+    save(text) {
+      this.task.todos.push({
+        text,
+        isDone: false
+      });
+      this.newTodoEdit = false;
     },
-    addNewTodo() {
-      this.todoChange()
-      this.dataTask.todo.push(newTodo)
-      this.newTodo = ''
-    }
-  },
-  computed: {
-    task() {
-      if (this.id != '' && !this.dataTask) {
-        return this.$store.getters.taskById(this.id)
+    changeStatus(idx) {
+      this.task.todos[idx].isDone = !this.task.todos[idx].isDone
+    },
+    deleteTodo(idx) {
+      this.task.todos.splice(idx, 1);
+    },
+    onSaveTask() {
+      if (!this.newTask) {
+        this.$store.dispatch('updateTask', {
+          id: this.id,
+          task: this.task
+        })
+      } else {
+        this.$store.dispatch('addTask', {task: this.task})
       }
-      else {
-        return {
-          title: '',
-          todos: []
-        }
-      }
+      this.$router.push('/')
     }
   }
 }
@@ -106,33 +121,6 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-    }
-}
-
-.alert-div {
-    position: fixed;
-    display: flex;
-    top: 0;
-    left: 0;
-    z-index: 9000;
-    width: 100%;
-    height: 100%;
-    background-color: gray;
-    opacity: 0.9;
-    justify-content: center;
-
-    &__fields {
-        align-self: center;
-    }
-
-    &__input {
-        margin-left: 10px;
-        &:focus {
-            border-radius: 4px;
-            outline-style: auto;
-            outline-width: 5px;
-            outline-offset: -2px;
-        }
     }
 }
 </style>

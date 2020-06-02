@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'TaskItem',
+  name: 'TaskCard',
   props: {
     task: Object
   }
