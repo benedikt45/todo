@@ -56,7 +56,6 @@ export default {
     } else {
       this.newTask = true
     }
-    console.log(this.task);
   },
   methods: {
     save(text) {
